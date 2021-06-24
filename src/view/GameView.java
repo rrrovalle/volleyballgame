@@ -171,8 +171,8 @@ public class GameView extends JFrame implements IGame {
 
 	@Override
 	public void resetGame() {
-		lbPointsA.setText("" + 0);
-		lbPointsB.setText("" + 0);
+		lbPointsA.setText(""  + 0);
+		lbPointsB.setText(""  + 0);
 		lbSetValue.setText("" + 1);
         list.setListData(new String[5]);
         btnAddA.setEnabled(true);

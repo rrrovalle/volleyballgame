@@ -16,6 +16,7 @@ public class GameController {
     private Team team1;
     private Team team2;
     private Referee gameReferee;
+    private String winner = "null";
     
     public static GameController getIntance() {
         if (instance == null) {
@@ -47,12 +48,14 @@ public class GameController {
                 break;
         }
         if (set.getSet() < 5) {
+        	/** If set < 5 then the minimum score is 5 and the maximum is 25 */
             verifyScore(25, 30);
         } else {
-            verifyScore(15, 15);
+        	/** set = 5 the minimum score is 15 and the maximum is 30 */
+            verifyScore(15, 30);
         }
         notifyRefreshScore();
-
+        
         verifyWonGame();
     }
 
@@ -74,34 +77,41 @@ public class GameController {
      */
      private void verifyScore(int min, int max) {
 
+    	 /** Team 1 Score + 1> Team 2 Score */
          if (team1.getScore() >= min && team1.getScore() > team2.getScore() + 1) {
              team1.wonSet();
              saveData(team1.getScore(), team2.getScore());
              notifyWonSet(1);
+             this.winner = "Team 1";
              return;
          }
 
+         /** Team 2 Score > Team 1 Score */
          if (team2.getScore() >= min && team2.getScore() > team1.getScore() + 1) {
              team2.wonSet();
              saveData(team1.getScore(), team2.getScore());
              notifyWonSet(2);
+             this.winner = "Team 2";
              return;
          }
 
+         /** Team 1 reached maximum score */
          if (team1.getScore() == max) {
              team1.wonSet();
              saveData(team1.getScore(), team2.getScore());
              notifyWonSet(1);
+             this.winner = "Team 1";
              return;
          }
 
+         /** Team 2 reached maximum score */
          if (team2.getScore() == max) {
              team2.wonSet();
              saveData(team1.getScore(), team2.getScore());
              notifyWonSet(2);
+             this.winner = "Team 2";
              return;
-         }
-
+         } 
      }
 
      /** 
@@ -118,6 +128,13 @@ public class GameController {
          }
 
      }
+     
+     /** 
+      *  Returns winner team. If it is not possible to define a winner, <empty> is returned
+      */
+     public String returnWinner() {
+    	 return this.winner;
+     }
 
      /**
       * Save score
@@ -132,12 +149,12 @@ public class GameController {
       * Reset score
       */
      public void resetGame() {
-         team1     = new Team();
-         team2 	   = new Team();
-         scoreList = new String[5];
+    	 this.set.reset();
+         this.team1     = new Team();
+         this.team2 	= new Team();
+         this.scoreList = new String[5];
 
          notifyRefreshScoreboard();
-
      }
 
      /**
