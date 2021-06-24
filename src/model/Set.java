@@ -15,4 +15,8 @@ public class Set {
     public void addSet() {
         this.set++;
     }
+    
+    public void reset() {
+    	this.set = 1;
+    }
 }
